@@ -1,0 +1,21 @@
+pipeline {
+   agent any
+
+   stages {
+      stage('SCM Checkout') {
+        steps {
+        git branch: 'master', url: 'https://github.com/dkt2010/irctc.git'
+        }
+      }
+     stage('Docker Image build') {
+        steps {
+        sh 'docker build . -t dkt2010/cicd-nginx:v101'
+        }
+     }
+    stage('Start Nginx Container') {
+        steps {
+        sh 'docker run -itd -P dkt2010/cicd-nginx:v101'
+        }
+      }
+   }
+}
